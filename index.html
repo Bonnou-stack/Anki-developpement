@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anki Développement — Froid, énergie et data centers</title>
+<meta name="description" content="Anki Développement : bureau d'études et installation de systèmes thermiques, climatisation, électricité et data centers. Conception, installation et maintenance.">
+<link rel="canonical" href="https://www.anki-developpement.fr/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#07152b; --navy2:#0d2344; --blue:#1f6fe0; --cyan:#22c3e6; --gold:#c9a24b;
+  --ink:#14233b; --muted:#5b6b82; --bg:#f5f7fb; --card:#fff; --line:#e3e9f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
+img,svg{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1160px,100% - 40px);margin-inline:auto}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;line-height:1.1;font-weight:700}
+.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+
+/* NAV */
+header{position:fixed;inset:0 0 auto 0;z-index:50;transition:.3s;background:transparent}
+header.scrolled{background:rgba(7,21,43,.92);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,.25)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:78px}
+.brand{display:flex;align-items:center;gap:12px;color:#fff}
+.brand img{height:58px;width:auto}
+.brand .fallback{display:none}
+.brand.nologo img{display:none}
+.brand.nologo .fallback{display:block}
+.brand b{font-family:"Cormorant Garamond",serif;font-size:1.5rem;letter-spacing:.14em;font-weight:600}
+.brand small{display:block;font-size:.62rem;letter-spacing:.38em;color:var(--gold);text-transform:uppercase}
+nav ul{display:flex;gap:30px;list-style:none;align-items:center}
+nav a{color:#dbe6f7;font-size:.92rem;font-weight:500;transition:.2s}
+nav a:hover{color:var(--cyan)}
+.btn{display:inline-block;padding:13px 26px;border-radius:999px;font-weight:600;font-size:.95rem;transition:.25s;cursor:pointer;border:0}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;box-shadow:0 8px 24px rgba(31,111,224,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(31,111,224,.5)}
+.btn-ghost{border:1px solid rgba(255,255,255,.35);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.burger{display:none;background:none;border:0;color:#fff;font-size:1.8rem}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;background:radial-gradient(1200px 600px at 80% 20%,#143a73 0,transparent 60%),linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;display:flex;align-items:center;overflow:hidden;padding:120px 0 80px}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(circle at 70% 40%,#000,transparent 70%)}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,5.6vw,4.6rem);margin:18px 0 22px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:1.12rem;color:#c3d2ea;max-width:540px;margin-bottom:34px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:42px}
+.chips span{padding:7px 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;font-size:.8rem;color:#bcd0ee;background:rgba(255,255,255,.04)}
+.hero-art{filter:drop-shadow(0 30px 60px rgba(0,0,0,.45))}
+.fan{transform-box:fill-box;transform-origin:center;animation:spin 1.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flow{stroke-dasharray:8 10;animation:dash 1.2s linear infinite}
+.flow.rev{animation-direction:reverse}
+@keyframes dash{to{stroke-dashoffset:-36}}
+.led{animation:blink 2.4s infinite}
+.led:nth-child(2n){animation-delay:.7s}.led:nth-child(3n){animation-delay:1.3s}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero-mark{position:absolute;right:-90px;bottom:-60px;width:520px;opacity:.07;pointer-events:none}
+.foot-logo{height:64px;width:auto;opacity:.9}
+.about-logo{width:210px;margin-top:28px;opacity:.95}
+/* SECTIONS */
+section{padding:100px 0}
+.head{max-width:680px;margin-bottom:56px}
+.head h2{font-size:clamp(2rem,4vw,3.1rem);margin:12px 0 14px;color:var(--navy)}
+.head p{color:var(--muted);font-size:1.05rem}
+.about{background:var(--bg)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pillar{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
+.pillar svg{width:42px;height:42px;margin-bottom:12px}
+.pillar h3{font-size:1.35rem;color:var(--navy);margin-bottom:6px}
+.pillar p{font-size:.92rem;color:var(--muted)}
+
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:.3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(13,35,68,.14);border-color:transparent}
+.card .art{height:128px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:grid;place-items:center;position:relative;overflow:hidden}
+.card .art::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0,rgba(34,195,230,.35),transparent 60%)}
+.card .art svg{width:110px;height:110px;position:relative;z-index:1}
+.card .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.card .body{padding:26px}
+.card h3{font-size:1.55rem;color:var(--navy);margin-bottom:8px}
+.card p{color:var(--muted);font-size:.95rem;margin-bottom:14px}
+.card ul{list-style:none;font-size:.9rem}
+.card li{padding:5px 0 5px 22px;position:relative;border-top:1px solid var(--line)}
+.card li::before{content:"";position:absolute;left:0;top:13px;width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan))}
+
+/* DATA CENTER */
+.dc{background:linear-gradient(160deg,var(--navy),#0a1d3a);color:#fff;position:relative;overflow:hidden}
+.dc-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center}
+.dc h2{font-size:clamp(2rem,4vw,3.1rem);margin:12px 0 18px}
+.dc p{color:#b9cae6;margin-bottom:22px}
+.dc ul{list-style:none;margin-bottom:28px}
+.dc li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);color:#dbe6f7}
+.dc li i{flex:none;width:26px;height:26px;border-radius:8px;background:rgba(34,195,230,.15);color:var(--cyan);display:grid;place-items:center;font-style:normal;font-size:.8rem}
+.ref{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:22px}
+.ref small{color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-size:.7rem;font-weight:600}
+.ref h3{font-size:1.5rem;margin:6px 0 8px}
+.ref p{margin:0;font-size:.92rem}
+
+/* PROCESS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:s}
+.step{position:relative;padding:28px;border-radius:20px;background:var(--bg);border:1px solid var(--line)}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:"Cormorant Garamond",serif;font-size:3rem;font-weight:700;color:transparent;-webkit-text-stroke:1px var(--gold);display:block;margin-bottom:6px}
+.step h3{font-size:1.4rem;color:var(--navy);margin-bottom:6px}
+.step p{font-size:.92rem;color:var(--muted)}
+
+/* LIVRABLES */
+.deliv{background:var(--bg)}
+.tags{display:flex;flex-wrap:wrap;gap:12px}
+.tags span{background:#fff;border:1px solid var(--line);padding:12px 20px;border-radius:14px;font-weight:500;font-size:.95rem;box-shadow:0 4px 12px rgba(13,35,68,.05)}
+.tags span b{color:var(--blue);margin-right:8px}
+
+/* CONTACT */
+.contact{background:linear-gradient(135deg,var(--blue),#0c3d9c);color:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.contact h2{font-size:clamp(2rem,4vw,3.1rem);margin:12px 0 16px}
+.contact p{color:#d5e3ff;margin-bottom:24px}
+.info div{margin-bottom:14px;color:#eaf1ff}.info b{display:block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+form{background:#fff;border-radius:22px;padding:30px;color:var(--ink);display:grid;gap:14px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+label{font-size:.8rem;font-weight:600;color:var(--muted)}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--bg);margin-top:4px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--cyan);background:#fff}
+textarea{min-height:120px;resize:vertical}
+
+footer{background:var(--navy);color:#8ea3c4;padding:36px 0;font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.reveal{opacity:0;transform:translateY(26px);transition:.8s}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .hero-grid,.about-grid,.dc-grid,.contact-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  nav ul{display:none;position:absolute;top:78px;left:0;right:0;background:var(--navy);flex-direction:column;padding:24px;gap:18px}
+  nav ul.open{display:flex}
+  .burger{display:block}
+}
+@media(max-width:620px){
+  .services-grid,.steps,.pillars{grid-template-columns:1fr}
+  section{padding:70px 0}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="#top" class="brand nologo" id="brand">
+      <img src="logo.png" alt="Anki Développement" onload="document.getElementById('brand').classList.remove('nologo')">
+      <span class="fallback"><b>ANKI</b><small>Développement</small></span>
+    </a>
+    <button class="burger" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+    <nav><ul id="menu">
+      <li><a href="#apropos">Entreprise</a></li>
+      <li><a href="#services">Expertises</a></li>
+      <li><a href="#datacenter">Data center</a></li>
+      <li><a href="#methode">Méthode</a></li>
+      <li><a href="#contact" class="btn btn-primary" style="color:#fff">Demander un devis</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-mark" src="logo.png" alt="" aria-hidden="true">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Bureau d'études · Installation · Maintenance</span>
+      <h1>L'énergie et le froid, <em>maîtrisés</em> de la conception au suivi.</h1>
+      <p class="lead">Anki Développement conçoit, installe et maintient des systèmes thermiques, de climatisation et d'énergie pour les infrastructures exigeantes : data centers, sites tertiaires et industriels.</p>
+      <div class="cta">
+        <a href="#contact" class="btn btn-primary">Parler de votre projet</a>
+        <a href="#services" class="btn btn-ghost">Découvrir nos expertises</a>
+      </div>
+      <div class="chips"><span>Data center</span><span>Froid &amp; climatisation</span><span>Électricité</span><span>Énergies renouvelables</span></div>
+    </div>
+
+    <!-- Illustration : salle data center + dry-cooler -->
+    <div class="hero-art">
+      <svg viewBox="0 0 560 460" role="img" aria-label="Illustration d'un data center refroidi par dry-cooler">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16407f"/><stop offset="1" stop-color="#0b2147"/></linearGradient>
+          <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22c3e6"/><stop offset="1" stop-color="#1f6fe0"/></linearGradient>
+          <linearGradient id="rack" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b2d4d"/><stop offset="1" stop-color="#0f1c33"/></linearGradient>
+        </defs>
+        <rect x="20" y="150" width="520" height="270" rx="18" fill="url(#g1)" stroke="#2b5ba8" stroke-opacity=".6"/>
+        <rect x="20" y="150" width="520" height="30" rx="14" fill="#0a1c3a"/>
+        <!-- dry coolers toit -->
+        <g>
+          <rect x="70" y="92" width="170" height="58" rx="8" fill="#0d2344" stroke="#2b5ba8"/>
+          <rect x="320" y="92" width="170" height="58" rx="8" fill="#0d2344" stroke="#2b5ba8"/>
+          <g fill="none" stroke="#22c3e6" stroke-width="3">
+            <g class="fan"><circle cx="115" cy="110" r="3" fill="#22c3e6"/><path d="M115 110 L115 92 M115 110 L133 110 M115 110 L115 128 M115 110 L97 110"/></g>
+            <g class="fan"><circle cx="195" cy="110" r="3" fill="#22c3e6"/><path d="M195 110 L195 92 M195 110 L213 110 M195 110 L195 128 M195 110 L177 110"/></g>
+            <g class="fan"><circle cx="365" cy="110" r="3" fill="#22c3e6"/><path d="M365 110 L365 92 M365 110 L383 110 M365 110 L365 128 M365 110 L347 110"/></g>
+            <g class="fan"><circle cx="445" cy="110" r="3" fill="#22c3e6"/><path d="M445 110 L445 92 M445 110 L463 110 M445 110 L445 128 M445 110 L427 110"/></g>
+          </g>
+          <g stroke="#22c3e6" stroke-width="3" stroke-linecap="round" opacity=".8"><path d="M150 82v-30M140 62l10-10 10 10"/><path d="M400 82v-30M390 62l10-10 10 10"/></g>
+        </g>
+        <!-- circuit fluide -->
+        <path class="flow" d="M155 150V215H110V380" fill="none" stroke="#22c3e6" stroke-width="4" stroke-linecap="round"/>
+        <path class="flow rev" d="M405 150V215H450V380" fill="none" stroke="#ff7a59" stroke-width="4" stroke-linecap="round"/>
+        <!-- racks -->
+        <g>
+          <g id="rk">
+            <rect x="140" y="225" width="44" height="155" rx="4" fill="url(#rack)" stroke="#2b5ba8"/>
+            <g class="leds" fill="#22c3e6"><rect class="led" x="148" y="236" width="28" height="5" rx="2"/><rect class="led" x="148" y="250" width="28" height="5" rx="2"/><rect class="led" x="148" y="264" width="28" height="5" rx="2"/><rect class="led" x="148" y="278" width="28" height="5" rx="2"/><rect class="led" x="148" y="292" width="28" height="5" rx="2"/><rect class="led" x="148" y="306" width="28" height="5" rx="2"/><rect class="led" x="148" y="320" width="28" height="5" rx="2"/><rect class="led" x="148" y="334" width="28" height="5" rx="2"/><rect class="led" x="148" y="348" width="28" height="5" rx="2"/></g>
+          </g>
+          <use href="#rk" x="62"/><use href="#rk" x="124"/><use href="#rk" x="186"/><use href="#rk" x="248"/>
+        </g>
+        <!-- sol -->
+        <rect x="20" y="380" width="520" height="40" rx="0" fill="#0a1c3a"/>
+        <!-- badges -->
+        <g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+          <rect x="378" y="188" width="140" height="26" rx="13" fill="#0a1c3a" stroke="#ff7a59"/><text x="448" y="205" fill="#ffb199" text-anchor="middle">Retour chaud</text>
+          <rect x="40" y="188" width="140" height="26" rx="13" fill="#0a1c3a" stroke="#22c3e6"/><text x="110" y="205" fill="#8fe4f6" text-anchor="middle">Départ froid</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ENTREPRISE -->
+<section class="about" id="apropos">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <span class="eyebrow">L'entreprise</span>
+      <h2 style="font-size:clamp(2rem,4vw,3.1rem);margin:12px 0 18px;color:var(--navy)">Une expertise technique, de l'étude au terrain.</h2>
+      <p style="color:var(--muted);margin-bottom:16px">Anki Développement intervient sur les travaux d'installation d'équipements thermiques et de climatisation, ainsi que sur la conception, l'installation et la maintenance de systèmes énergétiques : énergies renouvelables, data centers, gestion du froid et électricité.</p>
+      <p style="color:var(--muted)">Notre force : réunir sous un même toit le bureau d'études et l'exécution. Chaque installation s'appuie sur des notes de calcul rigoureuses, des plans d'exécution précis et un suivi de chantier sans rupture.</p>
+      <img class="about-logo" src="logo-dark.png" alt="Emblème Anki Développement">
+    </div>
+    <div class="pillars reveal">
+      <div class="pillar"><svg viewBox="0 0 48 48" fill="none" stroke="#1f6fe0" stroke-width="2.5" stroke-linecap="round"><path d="M24 4v40M8 12l32 24M40 12L8 36"/><circle cx="24" cy="24" r="4" fill="#22c3e6"/></svg><h3>Froid</h3><p>Refroidissement, dry-coolers, groupes de secours, climatisation de précision.</p></div>
+      <div class="pillar"><svg viewBox="0 0 48 48" fill="none" stroke="#1f6fe0" stroke-width="2.5" stroke-linejoin="round"><path d="M27 4L10 27h12l-2 17 18-24H26z"/></svg><h3>Énergie</h3><p>Distribution électrique, TGBT, onduleurs, groupes électrogènes.</p></div>
+      <div class="pillar"><svg viewBox="0 0 48 48" fill="none" stroke="#1f6fe0" stroke-width="2.5" stroke-linecap="round"><rect x="6" y="8" width="36" height="32" rx="3"/><path d="M6 18h36M14 28h8M14 34h14"/></svg><h3>Études</h3><p>Notes de calcul, schémas, plans d'exécution, CCTP et DPGF.</p></div>
+      <div class="pillar"><svg viewBox="0 0 48 48" fill="none" stroke="#1f6fe0" stroke-width="2.5" stroke-linecap="round"><rect x="6" y="6" width="36" height="10" rx="2"/><rect x="6" y="19" width="36" height="10" rx="2"/><rect x="6" y="32" width="36" height="10" rx="2"/><circle cx="12" cy="11" r="1.5" fill="#22c3e6"/><circle cx="12" cy="24" r="1.5" fill="#22c3e6"/><circle cx="12" cy="37" r="1.5" fill="#22c3e6"/></svg><h3>Data center</h3><p>Salles techniques, résilience, continuité de service.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="head reveal"><span class="eyebrow">Nos expertises</span><h2>Des solutions complètes pour vos infrastructures.</h2><p>Six domaines d'intervention, un interlocuteur unique du premier relevé à la maintenance.</p></div>
+    <div class="services-grid">
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linecap="round"><path d="M50 8v84M14 29l72 42M86 29L14 71"/><path d="M42 16l8 8 8-8M42 84l8-8 8 8" stroke-width="2.5"/><circle cx="50" cy="50" r="7" fill="#1f6fe0" stroke="none"/></svg>
+        <img src="images/froid.jpg" alt="Installation de refroidissement" onerror="this.remove()"></div>
+        <div class="body"><h3>Froid &amp; climatisation</h3><p>Production et distribution du froid pour environnements critiques.</p><ul><li>Refroidissement par immersion et dry-cooler</li><li>Circuits dédiés aux groupes de secours</li><li>Installation d'équipements thermiques</li></ul></div></article>
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linejoin="round"><path d="M56 6L22 54h24l-4 40 36-52H52z"/></svg>
+        <img src="images/energie.jpg" alt="Tableau électrique" onerror="this.remove()"></div>
+        <div class="body"><h3>Énergie &amp; électricité</h3><p>Fiabiliser l'alimentation et la distribution électrique.</p><ul><li>Relevés techniques et schémas électriques</li><li>Intervention sur TGBT, nouveaux tiroirs de distribution</li><li>Onduleurs, groupes électrogènes</li></ul></div></article>
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linecap="round"><rect x="14" y="14" width="72" height="20" rx="3"/><rect x="14" y="40" width="72" height="20" rx="3"/><rect x="14" y="66" width="72" height="20" rx="3"/><circle cx="26" cy="24" r="2.5" fill="#1f6fe0"/><circle cx="26" cy="50" r="2.5" fill="#1f6fe0"/><circle cx="26" cy="76" r="2.5" fill="#1f6fe0"/></svg>
+        <img src="images/datacenter.jpg" alt="Allée de data center" onerror="this.remove()"></div>
+        <div class="body"><h3>Data center</h3><p>Salles techniques conçues pour la disponibilité.</p><ul><li>Création de salles techniques (SMEDGE)</li><li>Mise en œuvre de couloirs froids</li><li>Refonte des installations frigorifiques</li></ul></div></article>
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linecap="round"><rect x="12" y="14" width="76" height="64" rx="4"/><path d="M12 32h76M26 50h22M26 62h36"/><path d="M70 50l10 10" stroke="#c9a24b"/></svg>
+        <img src="images/etudes.jpg" alt="Bureau d'études" onerror="this.remove()"></div>
+        <div class="body"><h3>Bureau d'études</h3><p>Des études complètes et exploitables sur chantier.</p><ul><li>Études et notes de calcul</li><li>Plans d'exécution</li><li>Schémas électriques et fluidiques</li></ul></div></article>
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linecap="round"><circle cx="50" cy="42" r="14" fill="#1f6fe0" stroke="none"/><path d="M50 12v8M50 64v8M20 42h8M72 42h8M29 21l6 6M65 57l6 6M71 21l-6 6M35 57l-6 6"/><path d="M20 90h60M50 72v18"/></svg>
+        <img src="images/renouvelable.jpg" alt="Énergies renouvelables" onerror="this.remove()"></div>
+        <div class="body"><h3>Énergies renouvelables</h3><p>Intégrer des sources durables à vos installations.</p><ul><li>Conception de systèmes énergétiques</li><li>Études thermiques</li><li>Optimisation des consommations</li></ul></div></article>
+
+      <article class="card reveal"><div class="art">
+        <svg viewBox="0 0 100 100" fill="none" stroke="#22c3e6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M70 14a18 18 0 0 0-22 24L14 72l14 14 34-34a18 18 0 0 0 24-22l-12 12-10-4-4-10z"/></svg>
+        <img src="images/maintenance.jpg" alt="Maintenance technique" onerror="this.remove()"></div>
+        <div class="body"><h3>Installation &amp; maintenance</h3><p>Un suivi dans la durée pour garantir la performance.</p><ul><li>Installation et mise en service</li><li>Maintenance préventive et corrective</li><li>Suivi de performance</li></ul></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- DATA CENTER -->
+<section class="dc" id="datacenter">
+  <div class="wrap dc-grid">
+    <div class="reveal">
+      <span class="eyebrow">Focus data center</span>
+      <h2>La continuité de service ne tolère aucun compromis.</h2>
+      <p>Dans un data center, chaque kilowatt consommé devient de la chaleur à évacuer. Nous concevons des chaînes froid–énergie robustes, redondantes et maintenables.</p>
+      <ul>
+        <li><i>✓</i>Solutions de refroidissement par immersion intégrant un dry-cooler</li>
+        <li><i>✓</i>Circuit de refroidissement dédié au groupe de secours extérieur</li>
+        <li><i>✓</i>Relevés techniques et schémas électriques, intervention sur TGBT</li>
+        <li><i>✓</i>Création de salles techniques avec mise en œuvre d'un couloir froid</li>
+      </ul>
+      <div class="ref"><small>Référence</small><h3>Refonte des installations frigorifiques</h3><p>Data center Crédit Agricole — Gradignan. Études, schémas, réalisation et suivi d'installation.</p></div>
+    </div>
+    <div class="reveal">
+      <svg viewBox="0 0 560 420" role="img" aria-label="Schéma de salle data center avec couloir froid">
+        <defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eef7"/><stop offset="1" stop-color="#9fb2cf"/></linearGradient>
+        <linearGradient id="rk2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0c1830"/><stop offset="1" stop-color="#22385f"/></linearGradient></defs>
+        <rect width="560" height="420" rx="22" fill="#0a1c3a" stroke="#2b5ba8" stroke-opacity=".5"/>
+        <!-- couloir perspective -->
+        <polygon points="230,120 330,120 330,250 230,250" fill="#142c55"/>
+        <polygon points="230,250 330,250 470,400 90,400" fill="url(#fl)"/>
+        <polygon points="40,40 230,120 230,250 40,400" fill="url(#rk2)" stroke="#2b5ba8"/>
+        <polygon points="520,40 330,120 330,250 520,400" fill="url(#rk2)" stroke="#2b5ba8"/>
+        <g stroke="#2b5ba8" stroke-width="1.5" opacity=".9">
+          <line x1="40" y1="140" x2="230" y2="165"/><line x1="40" y1="240" x2="230" y2="220"/><line x1="40" y1="320" x2="230" y2="260"/>
+          <line x1="520" y1="140" x2="330" y2="165"/><line x1="520" y1="240" x2="330" y2="220"/><line x1="520" y1="320" x2="330" y2="260"/>
+        </g>
+        <g fill="#22c3e6"><circle class="led" cx="90" cy="95" r="3"/><circle class="led" cx="120" cy="108" r="3"/><circle class="led" cx="160" cy="125" r="3"/><circle class="led" cx="470" cy="95" r="3"/><circle class="led" cx="440" cy="108" r="3"/><circle class="led" cx="400" cy="125" r="3"/></g>
+        <path class="flow" d="M280 400V260" stroke="#22c3e6" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <g font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#8fe4f6" text-anchor="middle"><text x="280" y="108">Couloir froid confiné</text></g>
+        <rect x="170" y="24" width="220" height="30" rx="15" fill="#0d2344" stroke="#c9a24b"/><text x="280" y="44" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#e6c97d" text-anchor="middle">Salle technique · SMEDGE</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTHODE -->
+<section id="methode">
+  <div class="wrap">
+    <div class="head reveal"><span class="eyebrow">Notre méthode</span><h2>Quatre étapes, aucune zone d'ombre.</h2></div>
+    <div class="steps">
+      <div class="step reveal"><h3>Relevés &amp; étude</h3><p>Relevés techniques sur site, études thermiques et notes de calcul pour dimensionner juste.</p></div>
+      <div class="step reveal"><h3>Conception</h3><p>Schémas électriques et fluidiques, plans d'exécution, rédaction du CCTP et du DPGF.</p></div>
+      <div class="step reveal"><h3>Installation</h3><p>Réalisation des travaux, intégration sur sites en exploitation, mise en service.</p></div>
+      <div class="step reveal"><h3>Suivi &amp; maintenance</h3><p>Suivi d'installation, maintenance préventive et corrective, amélioration continue.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVRABLES -->
+<section class="deliv">
+  <div class="wrap">
+    <div class="head reveal"><span class="eyebrow">Livrables</span><h2>Des dossiers complets, prêts pour la consultation et le chantier.</h2></div>
+    <div class="tags reveal">
+      <span><b>▸</b>Rédaction CCTP</span><span><b>▸</b>DPGF</span><span><b>▸</b>Notes de calcul électricité</span><span><b>▸</b>Schémas électriques</span><span><b>▸</b>Études thermiques</span><span><b>▸</b>Schémas fluidiques</span><span><b>▸</b>Plans d'exécution</span><span><b>▸</b>Suivi d'installation</span><span><b>▸</b>Maintenance</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <span class="eyebrow">Contact</span>
+      <h2>Parlons de votre projet.</h2>
+      <p>Décrivez-nous votre besoin : nous revenons vers vous rapidement avec une première analyse.</p>
+      <div class="info">
+        <div><b>Email</b>contact@anki-developpement.fr</div>
+        <div><b>Site</b>www.anki-developpement.fr</div>
+        <div><b>Activités</b>Froid · Énergie · Bureau d'études · Data center</div>
+      </div>
+    </div>
+    <form class="reveal" action="https://formspree.io/f/VOTRE_ID" method="POST">
+      <div><label>Nom / Société<input name="nom" required></label></div>
+      <div><label>Email<input type="email" name="email" required></label></div>
+      <div><label>Sujet<select name="sujet"><option>Froid &amp; climatisation</option><option>Énergie &amp; électricité</option><option>Data center</option><option>Bureau d'études</option><option>Maintenance</option><option>Autre</option></select></label></div>
+      <div><label>Votre message<textarea name="message" required></textarea></label></div>
+      <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="align-items:center"><img class="foot-logo" src="logo.png" alt="Anki Développement"><span>© <span id="y"></span> Anki Développement — Tous droits réservés.</span><span>Froid · Énergie · Data center</span></div>
+</footer>
+
+<script>
+const h=document.querySelector('header');
+addEventListener('scroll',()=>h.classList.toggle('scrolled',scrollY>40));
+document.getElementById('y').textContent=new Date().getFullYear();
+document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open')));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
